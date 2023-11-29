@@ -88,3 +88,8 @@ void GameMechs::setlostFlagTrue()
     exitFlag = true;
 }
 
+bool GameMechs::getlostFlagStatus()
+{
+    return loseFlag;
+}
+

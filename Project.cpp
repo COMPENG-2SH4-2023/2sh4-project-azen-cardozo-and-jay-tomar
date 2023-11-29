@@ -56,8 +56,7 @@ void Initialize(void)
 
     
     
-    
-
+    //initialize food avoid player position
     objPosArrayList* tempPlayer = myPlayer->getPlayerPos();
     myfood->generateFood(tempPlayer);
 
@@ -88,15 +87,23 @@ void RunLogic(void)
     objPos temphead;
     tempPlayer->getHeadElement(temphead);
 
-    objPos tempfood;
-    myfood->getFoodPos(tempfood);
 
 
-    if(myPlayer->checkFoodConsumption())
+    if(myPlayer->checkFoodConsumption()==1)
     {
         myPlayer->increasePlayerLength();
         myfood->generateFood(tempPlayer);
         myGM->incrementScore();
+        
+
+    }
+
+    else if(myPlayer->checkFoodConsumption()==2)
+    {
+        
+        myfood->generateFood(tempPlayer);
+        for(int i=0;i<10;i++) myGM->incrementScore();
+        
         
 
     }
@@ -112,12 +119,10 @@ void DrawScreen(void)
 {
     MacUILib_clearScreen();  
 
-    int k;
     objPosArrayList* tempPlayer = myPlayer->getPlayerPos();
-    objPos bodypart;
+    objPos bodypart,tempfoodpos;
 
-    objPos tempfood;
-    myfood->getFoodPos(tempfood);
+    objPosArrayList* tempfoodbucket = myfood->getFoodPos();
 
     objPos currHead;
     tempPlayer->getHeadElement(currHead);
@@ -129,7 +134,7 @@ void DrawScreen(void)
         for(int j = 0;j< myGM->getBoardSizeX() ;j++)
         {
 
-            for(k=0; k<tempPlayer->getSize();k++)
+            for(int k=0; k<tempPlayer->getSize();k++)
             {
                 tempPlayer->getElement(bodypart,k);
                 
@@ -139,9 +144,24 @@ void DrawScreen(void)
                 }
             }
 
-            if(k != tempPlayer->getSize())
+            for(int k=0; k<tempfoodbucket->getSize();k++)
+            {
+                tempfoodbucket->getElement(tempfoodpos,k);
+                
+                if(tempfoodpos.x == j&&tempfoodpos.y==i)
+                {
+                    break;
+                }
+            }
+
+            if(j == bodypart.x && i == bodypart.y)
             {
                 MacUILib_printf("%c",bodypart.symbol);
+            }
+
+            else if( j == tempfoodpos.x && i == tempfoodpos.y)
+            {
+                MacUILib_printf("%c",tempfoodpos.symbol);
             }
 
             else if( i == 0 || i == myGM->getBoardSizeY() - 1 || j == 0 || j == myGM->getBoardSizeX() - 1)
@@ -150,24 +170,13 @@ void DrawScreen(void)
             }
             else
             {
-
-                if(i == tempfood.y && j == tempfood.x)
-                {
-                    MacUILib_printf("%c",tempfood.symbol);
-                }
-
-                else
-                {
-                    MacUILib_printf(" ");
-                }
-                
-    
+                MacUILib_printf(" ");
             }
         }
         MacUILib_printf("\n");
     } 
     MacUILib_printf("Player's Head: <%d,%d>\nScores: %d\n",currHead.x,currHead.y,myGM->getScore());
-    MacUILib_printf("Food: %dx%d\n",tempfood.x,tempfood.y);
+    
     if(myPlayer->checkSelfCollision())
     {
         MacUILib_printf("Self Collision Happen !!!\n");
@@ -184,9 +193,18 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen();    
-  
-    MacUILib_uninit();
+
+    if(myGM ->getlostFlagStatus())
+    {
+        MacUILib_printf("Final score: %d",myGM->getScore());
+        MacUILib_uninit();
+    }
+
+    else{
+        MacUILib_uninit();
+    }
 
     delete myGM;
     delete myPlayer;
+    delete myfood;
 }

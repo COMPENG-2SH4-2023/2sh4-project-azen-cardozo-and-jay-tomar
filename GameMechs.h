@@ -46,6 +46,7 @@ class GameMechs
 
         //additional
         void setlostFlagTrue();
+        bool getlostFlagStatus();
       
 
 };

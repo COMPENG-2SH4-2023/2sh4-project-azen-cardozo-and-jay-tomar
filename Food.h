@@ -11,17 +11,17 @@
 class Food
 {
     private:
-        objPos foodPos;
+        objPosArrayList* foodbucket; //need to change
 
 
     public:
         //Constructor and Destructor
-        Food();
+        Food(); //need to update
         ~Food();
 
         //getters
         void generateFood(objPosArrayList* blockOff); //need to upgrade
-        void getFoodPos(objPos &returnPos);
+        objPosArrayList* getFoodPos(); //need to update
 
 };
 

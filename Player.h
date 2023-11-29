@@ -25,7 +25,7 @@ class Player
         void movePlayer();
 
         //More methods
-        bool checkFoodConsumption();
+        int checkFoodConsumption();
         void increasePlayerLength();
         bool checkSelfCollision();
 

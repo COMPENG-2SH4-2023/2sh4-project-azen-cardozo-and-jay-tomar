@@ -142,22 +142,36 @@ void Player::movePlayer()
 
 }
 
-bool Player::checkFoodConsumption()
+int Player::checkFoodConsumption()
 {
-    bool set;
-    objPos currHead;
+    int set;
+    objPos currHead,foodpos;
     playerPosList->getHeadElement(currHead);
-    objPos foodpos;
-    foodinfo->getFoodPos(foodpos);
+    
 
-    if(currHead.x == foodpos.x && currHead.y == foodpos.y)
+    objPosArrayList* food = foodinfo->getFoodPos();
+
+    for(int i=0;i<food->getSize();i++)
     {
-        set = true;
+        food->getElement(foodpos,i);
+        if(foodpos.isPosEqual(&currHead) &&foodpos.symbol=='o')
+        {
+            set = 1;
+            break;
+        }
+
+        else if(foodpos.isPosEqual(&currHead) && foodpos.symbol=='@')
+        {
+            set = 2;
+            break;
+        }
+
+        else
+        {
+            set =0;
+        }
     }
-    else
-    {
-        set = false;
-    }
+    
 
     return set;
 }
@@ -172,9 +186,8 @@ void Player::increasePlayerLength()
 bool Player::checkSelfCollision()
 {
     int k;
-    objPos currHead;
+    objPos currHead,bodypart;
     playerPosList->getHeadElement(currHead);
-    objPos bodypart;
 
     if(playerPosList->getSize()>1)
     {
@@ -197,4 +210,5 @@ bool Player::checkSelfCollision()
 
     return false;
 }
+
 

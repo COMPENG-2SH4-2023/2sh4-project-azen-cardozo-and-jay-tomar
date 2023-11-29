@@ -3,48 +3,101 @@
 
 Food::Food()
 {
-    foodPos.setObjPos(-1,-1,'o');
+    foodbucket = new objPosArrayList();
+}
+
+Food::~Food()
+{
+    delete foodbucket;
 }
 
 
 void Food::generateFood(objPosArrayList* blockOff)
 {
     int x,y,k;
-    bool breakloop = false;
+    int count = 0;
     bool not_overlap = false;
-    objPos tempBody;
+    objPos tempplayer;
+    objPos tempfood;
 
+    int board[30][15] = {0};
 
-    while(!breakloop)
+    int size = foodbucket->getSize();
+    while(size>0)
     {
-        x = rand() % (30-1)+1;
-        y = rand() % (15-1)+1;
-        foodPos.setObjPos(x,y,'o');
+        foodbucket->removeHead();
+        size--;
+    }
 
-        for(k=0; k<blockOff->getSize();k++)
+    while(count < 3)
+    {
+
+        bool Flag = 1;
+        x = rand() % (30-2)+1;
+        y = rand() % (15-2)+1;
+
+        tempfood.setObjPos(x,y,'o');
+
+        
+
+        for(int k=0; k<blockOff->getSize();k++)
         {
-            blockOff->getElement(tempBody,k);
-            if(tempBody.isPosEqual(&foodPos))
+            blockOff->getElement(tempplayer,k);
+            if(tempplayer.isPosEqual(&tempfood))
             {
+                Flag =0;
                 break;
             }
-        }
+        }   
+
         
-        if(k==blockOff->getSize())
+        if(Flag)
         {
-            not_overlap = true;
+            if(board[tempfood.x][tempfood.y] == 0 )
+            {
+                foodbucket->insertTail(tempfood);
+                board[tempfood.x][tempfood.y]++;
+                count++;
+            }
         }
 
-        if(x != 29 && y != 14 && not_overlap)
+    }
+
+    while(count < 5)
+    {
+
+        bool Flag = 1;
+        x = rand() % (30-2)+1;
+        y = rand() % (15-2)+1;
+
+        tempfood.setObjPos(x,y,'@');
+
+        for(int k=0; k<blockOff->getSize();k++)
         {
-            breakloop = true;
+            blockOff->getElement(tempplayer,k);
+            if(tempplayer.isPosEqual(&tempfood))
+            {
+                Flag =0;
+                break;
+            }
+        }   
+
+        
+        if(Flag)
+        {
+            if(board[tempfood.x][tempfood.y] == 0 )
+            {
+                foodbucket->insertTail(tempfood);
+                board[tempfood.x][tempfood.y]++;
+                count++;
+            }
         }
 
     }
     
 }
 
-void Food::getFoodPos(objPos &returnPos)
+objPosArrayList* Food::getFoodPos()
 {
-    returnPos.setObjPos(foodPos);
+    return foodbucket;
 }
