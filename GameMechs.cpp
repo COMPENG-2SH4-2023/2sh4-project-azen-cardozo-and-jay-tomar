@@ -3,6 +3,7 @@
 
 GameMechs::GameMechs()
 {
+    //initialize the info of the game
     input = 0;
     exitFlag = false;
     loseFlag = false;
@@ -23,6 +24,7 @@ GameMechs::GameMechs(int boardX, int boardY)
 
 // do you need a destructor?
 
+/*default destructor should be fun*/
 
 
 bool GameMechs::getExitFlagStatus()
@@ -32,7 +34,7 @@ bool GameMechs::getExitFlagStatus()
 
 char GameMechs::getInput()
 {
-    if(MacUILib_hasChar())
+    if(MacUILib_hasChar()) //get input when there is a char pressed
     {
         input = MacUILib_getChar();
     }

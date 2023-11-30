@@ -40,7 +40,7 @@ void Player::updatePlayerDir()
 {
     // PPA3 input processing logic
     
-    switch(mainGameMechsRef->getInput())
+    switch(mainGameMechsRef->getInput()) //modify the current moving direction
         {                      
             
             case 'w':
@@ -133,10 +133,8 @@ void Player::movePlayer()
     }
 
     
-    //new current head should be inserted to the head
+    //move the snake
     playerPosList->insertHead(currHead);
-
-    //remove the tail
     playerPosList->removeTail();
     
 
@@ -146,27 +144,27 @@ int Player::checkFoodConsumption()
 {
     int set;
     objPos currHead,foodpos;
-    playerPosList->getHeadElement(currHead);
+    playerPosList->getHeadElement(currHead); //get the info of head element
     
+    objPosArrayList* food = foodinfo->getFoodPos(); //get the info of food
 
-    objPosArrayList* food = foodinfo->getFoodPos();
 
     for(int i=0;i<food->getSize();i++)
     {
         food->getElement(foodpos,i);
-        if(foodpos.isPosEqual(&currHead) &&foodpos.symbol=='o')
+        if(foodpos.isPosEqual(&currHead) &&foodpos.symbol=='o') //check if the general food is consumed
         {
             set = 1;
             break;
         }
 
-        else if(foodpos.isPosEqual(&currHead) && foodpos.symbol=='@')
+        else if(foodpos.isPosEqual(&currHead) && foodpos.symbol=='@') //check if the special food is consumed
         {
             set = 2;
             break;
         }
 
-        else
+        else //no food being consumed
         {
             set =0;
         }
@@ -183,15 +181,16 @@ void Player::increasePlayerLength()
     playerPosList->insertHead(currHead);
 }
 
+
 bool Player::checkSelfCollision()
 {
     int k;
     objPos currHead,bodypart;
     playerPosList->getHeadElement(currHead);
 
-    if(playerPosList->getSize()>1)
+    if(playerPosList->getSize()>1)  //make sure the player has been generated
     {
-        for(k=2; k<playerPosList->getSize();k++)
+        for(k=2; k<playerPosList->getSize();k++) //check if the head element collided with the body
         {
             playerPosList->getElement(bodypart,k);
 
@@ -201,7 +200,7 @@ bool Player::checkSelfCollision()
             }
         }
 
-        if(k != playerPosList->getSize())
+        if(k != playerPosList->getSize()) //if collided
         {
             return true;
         }

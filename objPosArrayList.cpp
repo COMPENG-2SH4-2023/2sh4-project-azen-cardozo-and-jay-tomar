@@ -27,7 +27,7 @@ int objPosArrayList::getSize()
 
 void objPosArrayList::insertHead(objPos thisPos)
 {
-    if(sizeArray == sizeList)
+    if(sizeArray == sizeList) //check if the array has been full
     {
         return;
     }
@@ -44,7 +44,7 @@ void objPosArrayList::insertHead(objPos thisPos)
 
 void objPosArrayList::insertTail(objPos thisPos)
 {
-    if(sizeArray == sizeList)
+    if(sizeArray == sizeList) //check if the array has been full
     {
         return;
     }
@@ -56,12 +56,12 @@ void objPosArrayList::insertTail(objPos thisPos)
 
 void objPosArrayList::removeHead()
 {
-    if(sizeList == 0)
+    if(sizeList == 0) // check if the list is empty
     {
         return;
     }   
 
-    for(int i =0;i<sizeList-1;i++)
+    for(int i =0;i<sizeList-1;i++) //shift all the elements to the left
     {
         aList[i].setObjPos(aList[i+1]);
     }
@@ -71,7 +71,7 @@ void objPosArrayList::removeHead()
 
 void objPosArrayList::removeTail()
 {
-    if(sizeList ==0)
+    if(sizeList ==0) // check if the list is empty
     {
         return;
     }
@@ -81,7 +81,7 @@ void objPosArrayList::removeTail()
 
 void objPosArrayList::getHeadElement(objPos &returnPos)
 {
-    if(sizeList ==0)
+    if(sizeList ==0) // check if the list is empty
     {
         return;
     }
@@ -92,7 +92,7 @@ void objPosArrayList::getHeadElement(objPos &returnPos)
 
 void objPosArrayList::getTailElement(objPos &returnPos)
 {
-    if(sizeList ==0)
+    if(sizeList ==0) // check if the list is empty
     {
         return;
     }
@@ -102,7 +102,7 @@ void objPosArrayList::getTailElement(objPos &returnPos)
 
 void objPosArrayList::getElement(objPos &returnPos, int index)
 {
-    if(sizeList ==0)
+    if(sizeList ==0) // check if the list is empty
     {
         return;
     }

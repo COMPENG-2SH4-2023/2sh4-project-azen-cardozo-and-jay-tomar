@@ -14,25 +14,24 @@ Food::~Food()
 
 void Food::generateFood(objPosArrayList* blockOff)
 {
-    int x,y,k;
+    int x,y,k,size;
     int count = 0;
+    int board[30][15] = {0}; //generate a vector set to check if the coordinates have been taken
     bool not_overlap = false;
-    objPos tempplayer;
-    objPos tempfood;
+    objPos tempplayer, tempfood;
 
-    int board[30][15] = {0};
+    size = foodbucket->getSize(); //get the size list
 
-    int size = foodbucket->getSize();
-    while(size>0)
+    while(size>0) // clear all the food in bucket
     {
         foodbucket->removeHead();
         size--;
     }
 
-    while(count < 3)
+    while(count < 3) //generate three common food
     {
 
-        bool Flag = 1;
+        bool Flag = true;
         x = rand() % (30-2)+1;
         y = rand() % (15-2)+1;
 
@@ -40,12 +39,12 @@ void Food::generateFood(objPosArrayList* blockOff)
 
         
 
-        for(int k=0; k<blockOff->getSize();k++)
+        for(int k=0; k<blockOff->getSize();k++) //check if the food coordinate overlaps with the snake
         {
             blockOff->getElement(tempplayer,k);
             if(tempplayer.isPosEqual(&tempfood))
             {
-                Flag =0;
+                Flag =false;
                 break;
             }
         }   
@@ -53,17 +52,18 @@ void Food::generateFood(objPosArrayList* blockOff)
         
         if(Flag)
         {
-            if(board[tempfood.x][tempfood.y] == 0 )
+            if(board[tempfood.x][tempfood.y] == 0 ) //if the coordnate hasn't been occupied
             {
-                foodbucket->insertTail(tempfood);
-                board[tempfood.x][tempfood.y]++;
+                //add the coordinate and mark the corresponding vector
+                foodbucket->insertTail(tempfood); 
+                board[tempfood.x][tempfood.y]++; 
                 count++;
             }
         }
 
     }
 
-    while(count < 5)
+    while(count < 5) //generate two special food
     {
 
         bool Flag = 1;
@@ -72,9 +72,9 @@ void Food::generateFood(objPosArrayList* blockOff)
 
         tempfood.setObjPos(x,y,'@');
 
-        for(int k=0; k<blockOff->getSize();k++)
+        for(int k=0; k<blockOff->getSize();k++) //if the coordnate hasn't been occupied
         {
-            blockOff->getElement(tempplayer,k);
+            blockOff->getElement(tempplayer,k); 
             if(tempplayer.isPosEqual(&tempfood))
             {
                 Flag =0;
@@ -87,6 +87,7 @@ void Food::generateFood(objPosArrayList* blockOff)
         {
             if(board[tempfood.x][tempfood.y] == 0 )
             {
+                //add the coordinate and mark the corresponding vector
                 foodbucket->insertTail(tempfood);
                 board[tempfood.x][tempfood.y]++;
                 count++;

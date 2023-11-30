@@ -49,18 +49,18 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-
+    //initalzied variables
     myGM = new GameMechs(30,15);
     myfood = new Food();
     myPlayer = new Player(myGM,myfood);
 
-    
-    
+
     //initialize food avoid player position
     objPosArrayList* tempPlayer = myPlayer->getPlayerPos();
     myfood->generateFood(tempPlayer);
 
 
+    //update time
     srand(time(NULL));  
 
 
@@ -72,42 +72,43 @@ void GetInput(void)
     myGM->getInput();
 }
 
+
 void RunLogic(void)
 {
+
+    //move the snake
     myPlayer->updatePlayerDir(); 
     myPlayer->movePlayer();  
-
     myGM->clearInput();
 
 
     
-    //objPos tempPlayer;
-    //myPlayer->getPlayerPos(tempPlayer);
+    //get the player position and food position
     objPosArrayList* tempPlayer = myPlayer->getPlayerPos();
     objPos temphead;
     tempPlayer->getHeadElement(temphead);
 
 
 
+    //if general food consumed
     if(myPlayer->checkFoodConsumption()==1)
     {
+        //increase one score and add one lengthen
         myPlayer->increasePlayerLength();
         myfood->generateFood(tempPlayer);
         myGM->incrementScore();
-        
 
     }
 
-    else if(myPlayer->checkFoodConsumption()==2)
+    else if(myPlayer->checkFoodConsumption()==2) //if special food consumed
     {
-        
+        //add 10 scores without increasing lengthen
         myfood->generateFood(tempPlayer);
         for(int i=0;i<10;i++) myGM->incrementScore();
-        
-        
 
     }
-    
+
+    //check if self collision happens
     if(myPlayer->checkSelfCollision())
     {
         myGM->setlostFlagTrue();
@@ -115,26 +116,27 @@ void RunLogic(void)
     
 }
 
+
 void DrawScreen(void)
 {
     MacUILib_clearScreen();  
 
-    objPosArrayList* tempPlayer = myPlayer->getPlayerPos();
+    //local variables
     objPos bodypart,tempfoodpos;
-
+    objPosArrayList* tempPlayer = myPlayer->getPlayerPos();
     objPosArrayList* tempfoodbucket = myfood->getFoodPos();
 
+
+    //get the information of the head element
     objPos currHead;
     tempPlayer->getHeadElement(currHead);
-    
-
     
     for(int i = 0;i < myGM->getBoardSizeY();i++)
     {
         for(int j = 0;j< myGM->getBoardSizeX() ;j++)
         {
 
-            for(int k=0; k<tempPlayer->getSize();k++)
+            for(int k=0; k<tempPlayer->getSize();k++) //get the body cooridnate
             {
                 tempPlayer->getElement(bodypart,k);
                 
@@ -144,7 +146,7 @@ void DrawScreen(void)
                 }
             }
 
-            for(int k=0; k<tempfoodbucket->getSize();k++)
+            for(int k=0; k<tempfoodbucket->getSize();k++) //get the food coordinate
             {
                 tempfoodbucket->getElement(tempfoodpos,k);
                 
