@@ -353,7 +353,60 @@ void testRemoveTail_5Element()
 	// The destructor will be called automatically for stack-allocated objects
 }
 
+// Test Case 6 - insertHead to Full List
+void testInsertHead_FullList()
+{
+	objPos currentPos;
+	objPosArrayList thisList;
 
+	// Fill list to max capacity
+	for (int i = 0; i < ARRAY_MAX_CAP; ++i)
+	{
+		objPos samplePos{i, i * 2, 'a'};
+		thisList.insertHead(samplePos);
+	}
+
+	// Store head element before attempting to insert into a full list
+	objPos originalHead;
+	thisList.getHeadElement(originalHead);
+
+	// Try to insert one more element, list size should not change
+	objPos extraPos{100, 200, 'b'};
+	thisList.insertHead(extraPos);
+
+	int expectedSize = ARRAY_MAX_CAP;
+	int actualSize = thisList.getSize();
+
+	// Confirm list size is still at max capacity
+	ASSERT_EQUAL(expectedSize, actualSize);
+
+	// Check that head element remains the same after trying to insert into a full list
+	thisList.getHeadElement(currentPos);
+	bool expectedCheck = true;
+	bool actualCheck = originalHead.isPosEqual(&currentPos);
+	ASSERT_EQUAL(expectedCheck, actualCheck);
+
+	// The destructor will be called automatically for stack-allocated objects
+}
+
+
+// Test Case 7 - getElement from Empty List
+void testGetElement_EmptyList()
+{
+	objPos currentPos;
+	objPosArrayList thisList;
+
+	// Attempt to get an element from an empty list
+	thisList.getElement(currentPos, 0);
+
+	// The list is empty, so the retrieved element should be zero-initialized
+	objPos zeroPos;
+	bool expectedCheck = true;
+	bool actualCheck = zeroPos.isPosEqual(&currentPos);
+	ASSERT_EQUAL(expectedCheck, actualCheck);
+
+	// The destructor will be called automatically for stack-allocated objects
+}
 
 
 bool runAllTests(int argc, char const *argv[]) {
@@ -368,6 +421,9 @@ bool runAllTests(int argc, char const *argv[]) {
 	s.push_back(CUTE(testRemoveHead_5Element));
 	s.push_back(CUTE(testRemoveTail_1Element));
 	s.push_back(CUTE(testRemoveTail_5Element));
+	s.push_back(CUTE(testInsertHead_FullList));
+	s.push_back(CUTE(testGetElement_EmptyList));
+
 	
 
 
