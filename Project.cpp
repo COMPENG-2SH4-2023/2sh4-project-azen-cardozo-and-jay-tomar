@@ -177,12 +177,12 @@ void DrawScreen(void)
         }
         MacUILib_printf("\n");
     } 
-    MacUILib_printf("Player's Head: <%d,%d>\nScores: %d\n",currHead.x,currHead.y,myGM->getScore());
+
+    //display current info
+    MacUILib_printf("Press \"space\" to exit\n");
+    MacUILib_printf("Eat \"@\" to get 10 marks !\n");
+    MacUILib_printf("Snake's Head: <%d,%d>\nScores: %d\n",currHead.x,currHead.y,myGM->getScore());
     
-    if(myPlayer->checkSelfCollision())
-    {
-        MacUILib_printf("Self Collision Happen !!!\n");
-    }
 
 }
 
@@ -198,11 +198,13 @@ void CleanUp(void)
 
     if(myGM ->getlostFlagStatus())
     {
+        MacUILib_printf("Self Collision Happen !!!\n");
         MacUILib_printf("Final score: %d",myGM->getScore());
         MacUILib_uninit();
     }
 
     else{
+        MacUILib_printf("Final score: %d",myGM->getScore());
         MacUILib_uninit();
     }
 
