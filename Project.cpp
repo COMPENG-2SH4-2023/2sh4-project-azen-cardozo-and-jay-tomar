@@ -196,7 +196,7 @@ void CleanUp(void)
 {
     MacUILib_clearScreen();    
 
-    if(myGM ->getlostFlagStatus())
+    if(myGM ->getlostFlagStatus()) //self collision
     {
         MacUILib_printf("Self Collision Happen !!!\n");
         MacUILib_printf("Final score: %d",myGM->getScore());
@@ -204,10 +204,11 @@ void CleanUp(void)
     }
 
     else{
-        MacUILib_printf("Final score: %d",myGM->getScore());
+        MacUILib_printf("Final score: %d",myGM->getScore()); // press 'space'
         MacUILib_uninit();
     }
 
+    //release memory heap
     delete myGM;
     delete myPlayer;
     delete myfood;
